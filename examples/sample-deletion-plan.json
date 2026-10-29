@@ -1,0 +1,83 @@
+{
+  "plan_version": 1,
+  "tool_version": "1.0.0",
+  "generated_at": "2026-10-01T12:00:00+00:00",
+  "expires_at": "2026-10-04T12:00:00+00:00",
+  "min_age_days": 30,
+  "snapshot_before_delete": true,
+  "summary": {
+    "volume_count": 5,
+    "monthly_savings_usd": 1329.0,
+    "snapshot_monthly_cost_usd_upper_bound": 182.5,
+    "net_monthly_savings_usd": 1146.5
+  },
+  "entries": [
+    {
+      "account_id": "111122223333",
+      "account_name": "payments-prod",
+      "region": "us-east-1",
+      "volume_id": "vol-0a1b2c3d4e5f60001",
+      "name": "oracle-restore-test",
+      "volume_type": "io2",
+      "size_gib": 1000,
+      "create_time": "2026-03-03T12:00:00+00:00",
+      "action": "snapshot-and-delete",
+      "monthly_savings": 1165.0,
+      "snapshot_monthly_cost": 50.0
+    },
+    {
+      "account_id": "111122223333",
+      "account_name": "payments-prod",
+      "region": "eu-west-1",
+      "volume_id": "vol-0a1b2c3d4e5f60004",
+      "name": "log-archive-old",
+      "volume_type": "st1",
+      "size_gib": 2000,
+      "create_time": "2026-05-04T12:00:00+00:00",
+      "action": "snapshot-and-delete",
+      "monthly_savings": 90.0,
+      "snapshot_monthly_cost": 100.0
+    },
+    {
+      "account_id": "111122223333",
+      "account_name": "payments-prod",
+      "region": "us-east-1",
+      "volume_id": "vol-0a1b2c3d4e5f60002",
+      "name": "etl-scratch",
+      "volume_type": "gp3",
+      "size_gib": 500,
+      "create_time": "2026-06-27T12:00:00+00:00",
+      "action": "snapshot-and-delete",
+      "monthly_savings": 60.0,
+      "snapshot_monthly_cost": 25.0
+    },
+    {
+      "account_id": "444455556666",
+      "account_name": "payments-dev",
+      "region": "us-east-1",
+      "volume_id": "vol-0a1b2c3d4e5f60005",
+      "name": "",
+      "volume_type": "gp2",
+      "size_gib": 100,
+      "create_time": "2026-08-17T12:00:00+00:00",
+      "action": "snapshot-and-delete",
+      "monthly_savings": 10.0,
+      "snapshot_monthly_cost": 5.0
+    },
+    {
+      "account_id": "444455556666",
+      "account_name": "payments-dev",
+      "region": "us-east-1",
+      "volume_id": "vol-0a1b2c3d4e5f60006",
+      "name": "jenkins-agent-old",
+      "volume_type": "gp3",
+      "size_gib": 50,
+      "create_time": "2026-08-29T12:00:00+00:00",
+      "action": "snapshot-and-delete",
+      "monthly_savings": 4.0,
+      "snapshot_monthly_cost": 2.5
+    }
+  ],
+  "plan_id": "a94ca11571d5a328",
+  "checksum": "c7ad7723499e46c9fac7e617b55600b085c14f81142337cd2f6963c08c5a011c"
+}

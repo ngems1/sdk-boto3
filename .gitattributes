@@ -1,0 +1,3 @@
+# Keep LF line endings on every OS (important when committing from Windows,
+# otherwise tests and ruff format checks break in Linux CI).
+* text=auto eol=lf

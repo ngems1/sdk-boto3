@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  Least-privilege role assumed by ebs-audit from the management (or tooling) account.
+  Deploy to every member account with a service-managed CloudFormation StackSet.
+
+Parameters:
+  TrustedPrincipalArn:
+    Type: String
+    Description: ARN of the IAM role that runs ebs-audit (e.g. arn:aws:iam::111122223333:role/ebs-audit-runner)
+  ExternalId:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: Shared secret passed with --external-id (confused-deputy protection)
+  AllowDeletion:
+    Type: String
+    AllowedValues: ["false", "true"]
+    Default: "false"
+    Description: Also grant snapshot + delete permissions needed by `ebs-audit apply-plan`
+  RoleName:
+    Type: String
+    Default: EbsAuditRole
+
+Conditions:
+  GrantDelete: !Equals [!Ref AllowDeletion, "true"]
+
+Resources:
+  EbsAuditRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      Description: Read (and optionally clean up) unattached EBS volumes for ebs-audit
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref TrustedPrincipalArn
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Ref ExternalId
+      Policies:
+        - PolicyName: ebs-audit-read
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadOnlyEbsInventory
+                Effect: Allow
+                Action:
+                  - ec2:DescribeRegions
+                  - ec2:DescribeVolumes
+                  - ec2:DescribeSnapshots
+                Resource: "*"
+      Tags:
+        - Key: ManagedBy
+          Value: ebs-audit-stackset
+
+  EbsAuditDeletePolicy:
+    Type: AWS::IAM::RolePolicy
+    Condition: GrantDelete
+    Properties:
+      RoleName: !Ref EbsAuditRole
+      PolicyName: ebs-audit-delete
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: BackupSnapshot
+            Effect: Allow
+            Action: ec2:CreateSnapshot
+            Resource:
+              - !Sub arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:volume/*
+              - !Sub arn:${AWS::Partition}:ec2:*::snapshot/*
+          - Sid: TagOnlyOurNewSnapshots
+            Effect: Allow
+            Action: ec2:CreateTags
+            Resource: !Sub arn:${AWS::Partition}:ec2:*::snapshot/*
+            Condition:
+              StringEquals:
+                ec2:CreateAction: CreateSnapshot
+          - Sid: DeleteOnlyUnprotectedVolumes
+            Effect: Allow
+            Action: ec2:DeleteVolume
+            Resource: !Sub arn:${AWS::Partition}:ec2:*:${AWS::AccountId}:volume/*
+            Condition:
+              "Null":
+                aws:ResourceTag/DoNotDelete: "true"
+                aws:ResourceTag/ebs-audit:keep: "true"
+
+Outputs:
+  RoleArn:
+    Value: !GetAtt EbsAuditRole.Arn

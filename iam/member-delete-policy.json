@@ -1,0 +1,44 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VerifyBeforeActing",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVolumes",
+        "ec2:DescribeSnapshots"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "BackupSnapshot",
+      "Effect": "Allow",
+      "Action": "ec2:CreateSnapshot",
+      "Resource": [
+        "arn:aws:ec2:*:*:volume/*",
+        "arn:aws:ec2:*::snapshot/*"
+      ]
+    },
+    {
+      "Sid": "TagOnlyOurNewSnapshots",
+      "Effect": "Allow",
+      "Action": "ec2:CreateTags",
+      "Resource": "arn:aws:ec2:*::snapshot/*",
+      "Condition": {
+        "StringEquals": { "ec2:CreateAction": "CreateSnapshot" }
+      }
+    },
+    {
+      "Sid": "DeleteOnlyUnattachedUnprotectedVolumes",
+      "Effect": "Allow",
+      "Action": "ec2:DeleteVolume",
+      "Resource": "arn:aws:ec2:*:*:volume/*",
+      "Condition": {
+        "Null": {
+          "aws:ResourceTag/DoNotDelete": "true",
+          "aws:ResourceTag/ebs-audit:keep": "true"
+        }
+      }
+    }
+  ]
+}

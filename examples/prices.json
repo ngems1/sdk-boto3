@@ -1,0 +1,26 @@
+{
+  "default": {
+    "gp3": {
+      "gb_month": 0.08
+    }
+  },
+  "regions": {
+    "eu-west-1": {
+      "gp3": {
+        "gb_month": 0.088
+      },
+      "gp2": {
+        "gb_month": 0.11
+      },
+      "st1": {
+        "gb_month": 0.05
+      }
+    },
+    "ap-south-1": {
+      "gp3": {
+        "gb_month": 0.0912
+      }
+    }
+  },
+  "snapshot_gb_month": 0.05
+}

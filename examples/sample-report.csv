@@ -1,0 +1,7 @@
+account_id,account_name,region,availability_zone,volume_id,name,volume_type,size_gib,iops,throughput,encrypted,create_time,age_days,snapshot_id,protected,monthly_cost,annual_cost,tags
+111122223333,payments-prod,us-east-1,us-east-1a,vol-0a1b2c3d4e5f60001,oracle-restore-test,io2,1000,16000,,True,2026-03-03T12:00:00+00:00,212,,False,1165.0,13980.0,Name=oracle-restore-test
+111122223333,payments-prod,eu-west-1,us-east-1a,vol-0a1b2c3d4e5f60004,log-archive-old,st1,2000,,,True,2026-05-04T12:00:00+00:00,150,,False,90.0,1080.0,Name=log-archive-old
+111122223333,payments-prod,us-east-1,us-east-1a,vol-0a1b2c3d4e5f60002,etl-scratch,gp3,500,6000,250,True,2026-06-27T12:00:00+00:00,96,,False,60.0,720.0,Name=etl-scratch
+111122223333,payments-prod,us-east-1,us-east-1a,vol-0a1b2c3d4e5f60003,legal-hold,gp2,200,,,True,2025-08-27T12:00:00+00:00,400,,True,20.0,240.0,DoNotDelete=true;Name=legal-hold
+444455556666,payments-dev,us-east-1,us-east-1a,vol-0a1b2c3d4e5f60005,,gp2,100,,,True,2026-08-17T12:00:00+00:00,45,,False,10.0,120.0,
+444455556666,payments-dev,us-east-1,us-east-1a,vol-0a1b2c3d4e5f60006,jenkins-agent-old,gp3,50,,,True,2026-08-29T12:00:00+00:00,33,,False,4.0,48.0,Name=jenkins-agent-old

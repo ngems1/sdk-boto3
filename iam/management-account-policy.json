@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DiscoverAccounts",
+      "Effect": "Allow",
+      "Action": [
+        "organizations:ListAccounts",
+        "organizations:ListAccountsForParent",
+        "organizations:ListChildren",
+        "organizations:DescribeOrganization"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AssumeAuditRoleInMemberAccounts",
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": "arn:aws:iam::*:role/EbsAuditRole"
+    },
+    {
+      "Sid": "LivePricingOptional",
+      "Effect": "Allow",
+      "Action": "pricing:GetProducts",
+      "Resource": "*"
+    },
+    {
+      "Sid": "ScanCallerAccountToo",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeRegions",
+        "ec2:DescribeVolumes"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
